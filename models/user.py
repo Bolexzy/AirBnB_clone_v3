@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ holds class User"""
 import models
+import hashlib
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
@@ -21,3 +22,9 @@ class User(BaseModel, Base):
         password = ""
         first_name = ""
         last_name = ""
+
+    def __setattr__(self, k, v):
+        """Set user password."""
+        if k == 'password':
+            v = hashlib.md5(v.encode()).hexdigest()
+        super().__setattr__(k, v)
