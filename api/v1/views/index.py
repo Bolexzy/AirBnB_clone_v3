@@ -1,34 +1,27 @@
 #!/usr/bin/python3
 """
-This module contains the routes for the web application
+Flask route that returns json status response
 """
-from flask import jsonify
 from api.v1.views import app_views
-from models.amenity import Amenity
+from flask import jsonify
 from models import storage
-from models.city import City
-from models.state import State
-from models.place import Place
-from models.review import Review
-from models.user import User
 
 
-@app_views.route("/status", methods=['GET'], strict_slashes=False)
+@app_views.route('/status', methods=['GET'])
 def status():
-    """status of API"""
-    return jsonify({'status': "OK"})
+    """Returns a json status message. """
+    return jsonify(status="OK")
 
 
-@app_views.route("/stats", methods=['GET'], strict_slashes=False)
-def number_of_objects():
-    """retrieves the number of each objects by type"""
-    objs = {
-        'amenities': storage.count(Amenity),
-        'cities': storage.count(City),
-        'places': storage.count(Place),
-        'reviews': storage.count(Review),
-        'states': storage.count(State),
-        'users': storage.count(User)
-    }
-
-    return jsonify(objs)
+@app_views.route('/stats', methods=['GET'])
+def stats():
+    """Retrieves the number of each objects by type."""
+    stats = {
+            "amenities": storage.count("Amenity"),
+            "cities": storage.count("City"),
+            "places": storage.count("Place"),
+            "reviews": storage.count("Review"),
+            "states": storage.count("State"),
+            "users": storage.count("User")
+            }
+    return jsonify(stats)
