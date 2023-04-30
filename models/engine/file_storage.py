@@ -45,7 +45,7 @@ class FileStorage:
     def count(self, cls=None):
         """Count the number of objects in storage. """
         objs = {}
-        if cls in classes.values() || cls in classes.keys():
+        if cls in classes.values() or cls in classes.keys():
             objs = self.all(cls)
         return len(objs)
 
