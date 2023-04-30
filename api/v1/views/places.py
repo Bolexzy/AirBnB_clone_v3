@@ -33,7 +33,7 @@ def places_id(city_id):
         if place_data.get('user_id') is None:
             abort(400, "Missing user_id")
         user_obj = storage.get(User, place_data.get('user_id'))
-        if not user:
+        if not user_obj:
             abort(404, 'Not found')
         if place_data.get('name') is None:
             abort(400, 'Missing name')
