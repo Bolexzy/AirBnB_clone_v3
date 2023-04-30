@@ -7,6 +7,7 @@ from flask import (jsonify, abort, make_response, redirect,
                    url_for, request)
 from models import storage
 from models.city import City
+from models.state import State
 
 
 @app_views.route('/states/<state_id>/cities',
@@ -15,7 +16,7 @@ def cities(state_id):
     """Retrieves the list of all City objects on GET.
     Creates a City on POST.
     """
-    state_obj = storage.get('State', state_id)
+    state_obj = storage.get(State, state_id)
     if state_obj is None:
         abort(404, 'Not found')
 
@@ -31,6 +32,9 @@ def cities(state_id):
             abort(400, "Not a JSON")
         if city_obj.get('name') is None:
             abort(400, "Missing name")
+        city_state = storage.get(State, state_id)
+        if not city_state:
+            abort(404)
         new_city = City(**city_obj)
         new_city.state_id = state_id
         new_city.save()
@@ -42,6 +46,7 @@ def cities(state_id):
 def city_id(city_id):
     """Retrieves a City object on GET request.
     Deletes a City object on POST request.
+    Updates a City object
     """
     city = storage.get(City, city_id)
     if city is None:
