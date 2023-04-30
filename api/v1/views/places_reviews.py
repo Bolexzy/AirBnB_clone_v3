@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-View for Place objects that handles all default RESTFul API actions.
+View for Places_reviews objects that handles all default RESTFul API actions.
 """
 from api.v1.views import app_views
 from flask import (jsonify, abort, make_response, request)
@@ -12,7 +12,7 @@ from models.user import User
 
 @app_views.route('/places/<place_id>/reviews',
                  methods=['GET', 'POST'], strict_slashes=False)
-def places_id(place_id):
+def places_reviews_id(place_id=None):
     """Retrieves the list of all Review objects on GET.
     Creates a Review on POST.
     """
@@ -21,8 +21,8 @@ def places_id(place_id):
         abort(404, 'Not found')
 
     if request.method == 'GET':
-        all_places = storage.all(Place)
-        place_reviews = [obj.to_dict() for obj in all_places.values()
+        all_reviews = storage.all(Place).values()
+        place_reviews = [obj.to_dict() for obj in all_reviews
                          if obj.place_id == place_id]
         return jsonify(place_reviews)
 
@@ -45,7 +45,7 @@ def places_id(place_id):
 
 @app_views.route('/reviews/<review_id>', methods=['GET', 'DELETE', 'PUT'],
                  strict_slashes=False)
-def place_id(review_id):
+def reviews_id(review_id):
     """Retrieves a Review object on GET request.
     Deletes a Review object on POST request.
     Updates a Review object
