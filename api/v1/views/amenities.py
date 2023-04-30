@@ -55,6 +55,6 @@ def amenity():
             abort(400, "Not a JSON")
         if amenity_data.get('name') is None:
             abort(400, "Missing name")
-        new_amenity = menity(**amenity_data)
+        new_amenity = Amenity(**amenity_data)
         new_amenity.save()
         return make_response(jsonify(new_amenity.to_dict()), 201)
