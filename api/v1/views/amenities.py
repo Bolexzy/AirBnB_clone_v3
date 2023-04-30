@@ -10,7 +10,7 @@ from models.amenity import Amenity
 
 @app_views.route('/amenities/<amenity_id>/',
                  methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
-def amenity_id(state_id):
+def amenity_id(amenity_id):
     """Retrieves an Amenity object on GET.
     Updates a Amenity object on PUT.
     Deletes a Amenity object on DELETE.
@@ -40,7 +40,7 @@ def amenity_id(state_id):
 
 @app_views.route('/amenities', methods=['GET', 'POST'],
                  strict_slashes=False)
-def amenity(amenity_obj_id):
+def amenity():
     """Retrieves the list of all Amenity object on GET.
     Creates a Amenity object on POST.
     """
