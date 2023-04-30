@@ -3,8 +3,7 @@
 View for Place objects that handles all default RESTFul API actions.
 """
 from api.v1.views import app_views
-from flask import (jsonify, abort, make_response, redirect,
-                   url_for, request)
+from flask import (jsonify, abort, make_response, request)
 from models import storage
 from models.place import Place
 from models.city import City
@@ -13,7 +12,7 @@ from models.user import User
 
 @app_views.route('/cities/<city_id>/places',
                  methods=['GET', 'POST'], strict_slashes=False)
-def places(city_id):
+def places_id(city_id):
     """Retrieves the list of all Place objects on GET.
     Creates a Place on POST.
     """
@@ -64,11 +63,12 @@ def place_id(place_id):
         return make_response(jsonify({}), 200)
 
     if request.method == 'PUT':
-        place_obj = request.get_json()
-        if place_obj is None:
+        place_data = request.get_json()
+        if place_data is None:
             abort(400, "Not a JSON")
-        for key, value in place_obj.items():
-            if key not in ['id', 'city_id', 'created_at', 'updated_at']:
+        for key, value in place_data.items():
+            if key not in ['id', 'user_id',
+                           'city_id', 'created_at', 'updated_at']:
                 setattr(place, key, value)
         storage.save()
-        return jsonify(place.to_dict())
+        return jsonify(place.to_dict()), 200
