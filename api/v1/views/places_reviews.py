@@ -21,7 +21,7 @@ def places_reviews_id(place_id=None):
         abort(404, 'Not found')
 
     if request.method == 'GET':
-        all_reviews = storage.all(Place).values()
+        all_reviews = storage.all(Review).values()
         place_reviews = [obj.to_dict() for obj in all_reviews
                          if obj.place_id == place_id]
         return jsonify(place_reviews)
