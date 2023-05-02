@@ -95,16 +95,16 @@ def places_search():
         else:
             place_cities = set()
 
-        if cities:
+        if len(cities):
             cities = set([obj_id for obj_id in cities
                           if storage.get(City, obj_id)])
             place_cities = state_cities | cities
 
-        if place_cities:
-            all_places = [obj for obj in all_places
+        if len(place_cities):
+            all_places = [place for place in all_places
                           if obj.city_id in place_cities]
 
-        if amenities:
+        if len(amenities):
             amenities_obj = [storage.get(Amenity, a_id) for a_id in amenities]
             places = [place.to_dict() for place in all_places if
                       all([am in place.amenities for am in amenities_obj])]
