@@ -87,7 +87,7 @@ def places_search():
         states = places_data.get('states')
         cities = places_data.get('cities')
         amenities = places_data.get('amenities')
-    
+
     places = [place.to_dict() for place in all_places]
 
     if states:
@@ -104,8 +104,7 @@ def places_search():
                       if obj.city_id in place_cities]
 
     if amenities:
-        amenities = set([
-                        storage.get('Amenity', a_id) for a_id in amenities])
+        amenities = [storage.get(Amenity, a_id) for a_id in amenities]
         places = [place.to_dict() for place in all_places if
                   all([am in place.amenities for am in amenities])]
 
