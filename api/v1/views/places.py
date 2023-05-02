@@ -82,7 +82,7 @@ def places_search():
     places_data = request.get_json()
     if places_data is None:
         abort(400, "Not a JSON")
-    all_places = storage.all(Place).values()
+    all_places = [place for place in storage.all(Place).values()]
     if places_data and len(places_data):
         states = places_data.get('states')
         cities = places_data.get('cities')
