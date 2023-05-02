@@ -80,7 +80,7 @@ def places_search():
     """Retrieves all Place objects depending of the JSON
     in the body of the request. """
     places_data = request.get_json()
-    if not places_data:
+    if places_data is None:
         abort(400, "Not a JSON")
     all_places = storage.all(Place).values()
     if places_data and len(places_data):
@@ -88,26 +88,26 @@ def places_search():
         cities = places_data.get('cities')
         amenities = places_data.get('amenities')
 
-    if states:
-        all_cities = storage.all(City).values()
-        state_cities = set([obj.id for obj in all_cities
-                           if obj.state_id in states])
-    else:
-        place_cities = set()
+        if states:
+            all_cities = storage.all(City).values()
+            state_cities = set([obj.id for obj in all_cities
+                                if obj.state_id in states])
+        else:
+            place_cities = set()
 
-    if cities:
-        cities = set([obj_id for obj_id in cities
-                      if storage.get(City, obj_id)])
-        place_cities = state_cities | cities
+        if cities:
+            cities = set([obj_id for obj_id in cities
+                          if storage.get(City, obj_id)])
+            place_cities = state_cities | cities
 
-    if place_cities:
-        all_places = [obj for obj in all_places
-                      if obj.city_id in place_cities]
+        if place_cities:
+            all_places = [obj for obj in all_places
+                          if obj.city_id in place_cities]
 
-    if amenities:
-        amenities_obj = [storage.get(Amenity, a_id) for a_id in amenities]
-        places = [place.to_dict() for place in all_places if
-                  all([am in place.amenities for am in amenities_obj])]
+        if amenities:
+            amenities_obj = [storage.get(Amenity, a_id) for a_id in amenities]
+            places = [place.to_dict() for place in all_places if
+                      all([am in place.amenities for am in amenities_obj])]
     else:
         places = [place.to_dict() for place in all_places]
 
