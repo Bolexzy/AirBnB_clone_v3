@@ -83,7 +83,7 @@ def places_search():
     if places_data is None:
         abort(400, "Not a JSON")
     all_places = [place for place in storage.all(Place).values()]
-    places = []
+    place_cities = set()
     if places_data and len(places_data):
         states = places_data.get('states')
         cities = places_data.get('cities')
@@ -93,13 +93,12 @@ def places_search():
             all_cities = storage.all(City).values()
             state_cities = set([obj.id for obj in all_cities
                                 if obj.state_id in states])
-        else:
-            place_cities = set()
+            place_cities = state_cities
 
         if len(cities):
             cities = set([obj_id for obj_id in cities
                           if storage.get(City, obj_id)])
-            place_cities = state_cities | cities
+            place_cities = place_cities | cities
 
         if len(place_cities):
             all_places = [place for place in all_places
